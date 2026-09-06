@@ -3,12 +3,12 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://finnishlanguage.academy'),
-  title: { default: 'Finnish Language Academy — Suomi, joka tuntuu omalta.', template: '%s | Finnish Language Academy' },
-  description: 'Selkeä, käytännöllinen ja omaan tahtiin etenevä verkkokoulu suomen kielen oppimiseen A0-tasolta YKI-kokeeseen.',
-  keywords: ['suomen kielen kurssi', 'opettele suomea', 'YKI-testi', 'Finnish language course', 'Finnish online school'],
-  openGraph: { type: 'website', locale: 'fi_FI', siteName: 'Finnish Language Academy', title: 'Suomi, joka tuntuu omalta.', description: 'Suomen kielen koulu omaan tahtiin.' },
-  twitter: { card: 'summary_large_image', title: 'Finnish Language Academy', description: 'Suomi, joka tuntuu omalta.' },
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://opiope.fi'),
+  title: { default: 'OpiOpe – Opi suomea verkossa A0–C2', template: '%s | OpiOpe' },
+  description: 'Opi suomea verkossa OpiOpessa. Harjoittele suomen kieltä A0–C2, kielioppia, sanastoa, puhekieltä, työelämän suomea ja YKI-tehtäviä.',
+  keywords: ['opi suomea', 'suomen kielen kurssi', 'suomen kielen kurssi verkossa', 'suomea aloittelijoille', 'suomen kieli A1', 'suomen kieli A2', 'suomen kieli B1', 'suomen kieli B2', 'YKI harjoittelu', 'YKI valmistautuminen', 'suomen kielen kielioppi', 'suomen kielen sanasto', 'puhekieli', 'työelämän suomi'],
+  openGraph: { type: 'website', locale: 'fi_FI', siteName: 'OpiOpe', title: 'OpiOpe – Opi suomea verkossa A0–C2', description: 'Suomea arkeen, työhön ja YKIin.' },
+  twitter: { card: 'summary_large_image', title: 'OpiOpe – Opi suomea verkossa A0–C2', description: 'Opi suomea. Oikeasti.' },
   robots: { index: true, follow: true },
 }
 
