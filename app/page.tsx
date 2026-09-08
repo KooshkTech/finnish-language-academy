@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
-import { ArrowRight, BookOpen, Check, ChevronDown, CircleHelp, Flame, Headphones, LogOut, Menu, Mic2, PenLine, Play, Sparkles, Target, X } from 'lucide-react'
+import { useCallback, useEffect, useMemo, useState, type FormEvent } from 'react'
+import { ArrowRight, BookOpen, Check, LogOut, Menu, PenLine, Sparkles, Target, X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+<<<<<<< HEAD
 import { useGuestProgress } from '@/hooks/useGuestProgress'
 import type { GrammarAttempt, PlacementResult } from '@/types/learning'
 
@@ -19,12 +20,26 @@ const grammarQuestions = [{ prompt: 'Minä menen ___.', options: ['kauppa', 'kau
 const placementQuestions = [{ prompt: 'Mikä tarkoittaa “kiitos”?', options: ['tack', 'hej', 'arbete'], answer: 'tack', category: 'sanasto' }, { prompt: 'Valitse oikea lause.', options: ['Minä asuu Suomessa.', 'Minä asun Suomessa.', 'Minä asuvat Suomessa.'], answer: 'Minä asun Suomessa.', category: 'kielioppi' }, { prompt: 'Mitä “huomenna” tarkoittaa?', options: ['yesterday', 'today', 'tomorrow'], answer: 'tomorrow', category: 'sanasto' }]
 const swedishLesson = { title: 'Ruotsi alusta asti', subtitle: 'Skandinavian ensimmäiset lauseet', words: ['hej', 'tack', 'jag heter'], example: 'Hej! Jag heter Alex.' }
 const courseLessons = [{ slug: 'suomi-alusta-asti', title: 'Suomi alusta asti', level: 'A0–A1', duration: '4 viikkoa', description: 'Peruslauseet, ääntäminen ja arjen tärkeimmät tilanteet.', color: 'red', stages: [{ title: 'Tervehdykset', body: 'Opit tervehtimään, esittelemään itsesi ja kysymään kuulumisia.', example: 'Hei! Minä olen Alex. Hauska tutustua.', question: 'Miten sanot “hello”?', options: ['Hei', 'Kiitos', 'Näkemiin'], answer: 'Hei', explanation: 'Hei on tavallinen ja turvallinen tervehdys.' }, { title: 'Minä olen', body: 'Harjoittelet olla-verbin käyttöä ja yksinkertaista esittelyä.', example: 'Minä olen opiskelija.', question: 'Valitse oikea muoto: Minä ___ Suomessa.', options: ['asun', 'asuu', 'asuvat'], answer: 'asun', explanation: 'Minä-pronominin kanssa käytämme muotoa asun.' }] }, { slug: 'sujuvampi-arki', title: 'Sujuvampi arki', level: 'A2–B1', duration: '6 viikkoa', description: 'Puhekieltä, asiointia ja tilanteita kodin ulkopuolella.', color: 'blue', stages: [{ title: 'Kahvilassa', body: 'Tilaat kohteliaasti ja kuulet, miten puhekieli muuttaa ilmauksia.', example: 'Ottaisin yhden kahvin, kiitos.', question: 'Miten pyydät kahvin kohteliaasti?', options: ['Ottaisin kahvin.', 'Anna kahvi nyt.', 'Kahvi minä.'], answer: 'Ottaisin kahvin.', explanation: 'Ottaisin on kohtelias konditionaali tilaamiseen.' }] }, { slug: 'tyoelaman-suomi', title: 'Työelämän suomi', level: 'B1–B2', duration: '8 viikkoa', description: 'Palaverit, palautteen antaminen ja ammatillinen sanasto.', color: 'green', stages: [{ title: 'Palaverissa', body: 'Harjoittelet mielipiteen ilmaisua ja rakentavaa keskustelua.', example: 'Voisin ehdottaa, että kokeilemme tätä ensin.', question: 'Mikä ilmaus on rakentava?', options: ['Voisin ehdottaa...', 'Tämä on tyhmä.', 'Ei käy.'], answer: 'Voisin ehdottaa...', explanation: 'Voisin ehdottaa avaa keskustelun rakentavasti.' }] }, { slug: 'yki-valmennus', title: 'YKI-valmennus', level: 'B1–C1', duration: '8 viikkoa', description: 'YKI-tehtävätyypit, tekstin rakenne ja ajanhallinta.', color: 'yellow', stages: [{ title: 'Tekstin rakenne', body: 'Rakennat vastauksen, jossa on aloitus, perustelut ja lopetus.', example: 'Ensinnäkin... Lisäksi... Lopuksi...', question: 'Mikä auttaa tekstin rakennetta?', options: ['Järjestyssanat', 'Satunnaiset lauseet', 'Yksi sana'], answer: 'Järjestyssanat', explanation: 'Järjestyssanat tekevät tekstin etenemisestä selkeää.' }] }]
+=======
+import { courses, grammarQuestions, placementQuestions, representativeLesson, words } from '@/data/learning'
+import type { DashboardData, Profile } from '@/types/learning'
+import { useGuestProgress } from '@/hooks/useGuestProgress'
+import { loadDashboardData, recordDailyActivity, savePlacementResult } from '@/services/progress'
+import { saveGrammarAttempt } from '@/services/grammar'
+import { createVocabularyProgress, scheduleVocabularyReview } from '@/services/vocabulary'
+import { scorePlacement } from '@/services/placement'
+import { signIn, signUp, supabaseConfigured } from '@/services/auth'
+
+type User = { id: string; email?: string }
+type View = 'home' | 'placement' | 'dashboard' | 'lesson' | 'vocabulary' | 'grammar' | 'ai' | 'translation' | 'yki'
+>>>>>>> 00f644f1c2a426f01c3118904d420b007f2001d9
 
 export default function Page() {
   const supabase = useMemo(() => createClient(), [])
   const { guestState, updateGuestState } = useGuestProgress()
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
+<<<<<<< HEAD
   const [view, setView] = useState<'home' | 'onboarding' | 'dashboard' | 'vocabulary' | 'grammar' | 'placement' | 'placement-result' | 'swedish' | 'lesson'>('home')
   const [activeLesson, setActiveLesson] = useState(courseLessons[0])
   const [lessonStage, setLessonStage] = useState(0)
@@ -35,22 +50,27 @@ export default function Page() {
   const [placementIndex, setPlacementIndex] = useState(0)
   const [placementScore, setPlacementScore] = useState(0)
   const [placementResult, setPlacementResult] = useState<PlacementResult | null>(null)
+=======
+  const [dashboard, setDashboard] = useState<DashboardData | null>(null)
+  const [view, setView] = useState<View>('home')
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [placementIndex, setPlacementIndex] = useState(0)
+  const [placementAnswers, setPlacementAnswers] = useState<Record<string, string>>({})
+>>>>>>> 00f644f1c2a426f01c3118904d420b007f2001d9
   const [grammarIndex, setGrammarIndex] = useState(0)
   const [grammarAnswer, setGrammarAnswer] = useState('')
   const [grammarFeedback, setGrammarFeedback] = useState('')
+  const [wordIndex, setWordIndex] = useState(0)
+  const [wordAnswer, setWordAnswer] = useState('')
+  const [wordFeedback, setWordFeedback] = useState('')
   const [authOpen, setAuthOpen] = useState(false)
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('signup')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [authMessage, setAuthMessage] = useState('')
-  const [onboardingStep, setOnboardingStep] = useState(0)
-  const [onboarding, setOnboarding] = useState({ level: 'En ole vielä varma', goal: 'Puhua arjessa', minutes: 10, name: '' })
-  const [wordIndex, setWordIndex] = useState(0)
-  const [wordAnswer, setWordAnswer] = useState('')
-  const [wordFeedback, setWordFeedback] = useState('')
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [faq, setFaq] = useState<number | null>(0)
+  const [busy, setBusy] = useState(false)
 
+<<<<<<< HEAD
   useEffect(() => { const savedLanguage = window.localStorage.getItem('opiope-language'); if (savedLanguage === 'sv') setLanguage('sv'); supabase.auth.getUser().then(({ data }) => { if (data.user) { setUser(data.user); loadProfile(data.user.id) } }); const { data } = supabase.auth.onAuthStateChange((_event, session) => { if (session?.user) { setUser(session.user); loadProfile(session.user.id) } else setUser(null) }); return () => data.subscription.unsubscribe() }, [supabase])
   async function loadProfile(id: string) { const { data } = await supabase.from('profiles').select('display_name, level, goal, daily_minutes').eq('id', id).maybeSingle(); if (data) { setProfile(data); setView('dashboard') } }
   async function authenticate(event: FormEvent) { event.preventDefault(); setAuthMessage('') ; const result = authMode === 'signup' ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: process.env.NEXT_PUBLIC_DEV_SUPABASE_REDIRECT_URL ?? `${window.location.origin}/auth/callback` } }) : await supabase.auth.signInWithPassword({ email, password }); if (result.error) { setAuthMessage(authMode === 'signup' ? 'Tarkista sähköposti tai salasanan vahvuus.' : 'Virheellinen sähköposti tai salasana.'); return } if (authMode === 'signup') setAuthMessage('Tarkista sähköpostisi ja vahvista tili ennen aloittamista.') ; else setAuthOpen(false) }
@@ -63,8 +83,104 @@ export default function Page() {
   function nextLessonStage() { if (lessonStage < activeLesson.stages.length - 1) { setLessonStage(lessonStage + 1); setLessonAnswer(''); setLessonFeedback(''); return } setCompletedLessons(previous => previous.includes(activeLesson.slug) ? previous : [...previous, activeLesson.slug]); setView('dashboard') }
   function answerPlacement(answer: string) { const question = placementQuestions[placementIndex]; const nextScore = placementScore + (answer === question.answer ? 1 : 0); if (placementIndex < placementQuestions.length - 1) { setPlacementScore(nextScore); setPlacementIndex(placementIndex + 1); return } const estimatedLevel = (nextScore === 3 ? 'A2' : nextScore === 2 ? 'A1' : 'A0') as PlacementResult['estimatedLevel']; const result: PlacementResult = { estimatedLevel, score: nextScore, total: placementQuestions.length, categoryScores: { sanasto: { correct: nextScore, total: 2 }, kielioppi: { correct: answer === question.answer ? 1 : 0, total: 1 } }, recommendedLesson: nextScore > 1 ? 'sujuvampi-arki' : 'suomi-alusta-asti', completedAt: new Date().toISOString() }; setPlacementResult(result); updateGuestState(state => ({ ...state, placementResult: result, recommendedLesson: result.recommendedLesson })); setView('placement-result') }
   async function signOut() { await supabase.auth.signOut(); setUser(null); setProfile(null); setView('home') }
-  const currentWord = words[wordIndex]
+=======
+  const refreshDashboard = useCallback(async (id: string) => {
+    if (!supabaseConfigured()) return
+    try { setDashboard(await loadDashboardData(supabase, id)) } catch { setDashboard(null) }
+  }, [supabase])
 
+  const loadProfile = useCallback(async (id: string) => {
+    if (!supabaseConfigured()) return
+    const { data } = await supabase.from('profiles').select('display_name,level,goal,daily_minutes').eq('id', id).maybeSingle()
+    if (data) setProfile(data as Profile)
+  }, [supabase])
+
+  useEffect(() => {
+    if (!supabaseConfigured()) return
+    let active = true
+    void supabase.auth.getUser().then(({ data }) => {
+      if (!active || !data.user) return
+      setUser(data.user)
+      void loadProfile(data.user.id)
+      void refreshDashboard(data.user.id)
+    })
+    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!active) return
+      if (session?.user) {
+        setUser(session.user)
+        void loadProfile(session.user.id)
+        void refreshDashboard(session.user.id)
+      } else {
+        setUser(null); setProfile(null); setDashboard(null)
+      }
+    })
+    return () => { active = false; data.subscription.unsubscribe() }
+  }, [loadProfile, refreshDashboard, supabase])
+
+  async function authenticate(event: FormEvent) {
+    event.preventDefault()
+    if (!supabaseConfigured()) { setAuthMessage('Tilipalvelu ei ole vielä käytettävissä. Supabase-määritys puuttuu.'); return }
+    setBusy(true); setAuthMessage('')
+    try {
+      const result = authMode === 'signup' ? await signUp(supabase, email, password) : await signIn(supabase, email, password)
+      if (result.error) { setAuthMessage('Kirjautuminen epäonnistui. Tarkista tiedot.'); return }
+      if (authMode === 'signup') setAuthMessage('Tarkista sähköpostisi ja vahvista tili.')
+      else { setAuthOpen(false); setView('dashboard') }
+    } finally { setBusy(false) }
+  }
+
+  function choosePlacement(answer: string) {
+    const q = placementQuestions[placementIndex]
+    const next = { ...placementAnswers, [q.id]: answer }
+    setPlacementAnswers(next)
+    if (placementIndex < placementQuestions.length - 1) { setPlacementIndex(i => i + 1); return }
+    const result = scorePlacement(next)
+    updateGuestState(current => ({ ...current, placementResult: result, recommendedLesson: result.recommendedLesson }))
+    if (user && supabaseConfigured()) void savePlacementResult(supabase, user.id, result).then(() => refreshDashboard(user.id))
+  }
+
+  async function answerGrammar(answer: string) {
+    const q = grammarQuestions[grammarIndex]
+    const correct = answer === q.answer
+    const attempt = { exerciseId: `grammar-${grammarIndex + 1}`, topic: q.topic, selectedAnswer: answer, isCorrect: correct, attemptedAt: new Date().toISOString() }
+    setGrammarAnswer(answer)
+    setGrammarFeedback(correct ? `Oikein. ${q.explanation}` : `Hyvä yritys. Oikea vastaus on ${q.answer}. ${q.explanation}`)
+    if (user && supabaseConfigured()) {
+      try { await saveGrammarAttempt(supabase, user.id, attempt); await recordDailyActivity(supabase, user.id); await refreshDashboard(user.id) } catch { /* feedback still remains useful */ }
+    } else updateGuestState(current => ({ ...current, grammarAttempts: [...current.grammarAttempts, attempt] }))
+  }
+
+  async function answerWord() {
+    const item = words[wordIndex]
+    const correct = wordAnswer.trim().toLowerCase() === item.translation.toLowerCase()
+    setWordFeedback(correct ? 'Oikein. Hienosti muistettu.' : `Vastaus on: ${item.translation}.`)
+    if (!user || !supabaseConfigured()) {
+      updateGuestState(current => {
+        const base = current.vocabularyProgress[item.word] ?? createVocabularyProgress(item.word, item.translation)
+        return { ...current, vocabularyProgress: { ...current.vocabularyProgress, [item.word]: scheduleVocabularyReview(base, correct) } }
+      })
+      return
+    }
+    const { data } = await supabase.from('vocabulary_progress').select('*').eq('user_id', user.id).eq('word', item.word).maybeSingle()
+    const base = data ? { word: data.word, translation: data.translation, firstSeen: data.first_seen, lastReviewed: data.last_reviewed, nextReview: data.next_review, correctCount: data.correct_count ?? 0, wrongCount: data.wrong_count ?? 0, interval: data.interval ?? 0, easeFactor: Number(data.ease_factor ?? 2.5), confidence: data.confidence ?? 0, mastery: data.mastery ?? 0 } : createVocabularyProgress(item.word, item.translation)
+    const next = scheduleVocabularyReview(base, correct)
+    await supabase.from('vocabulary_progress').upsert({ user_id: user.id, word: next.word, translation: next.translation, first_seen: next.firstSeen, last_reviewed: next.lastReviewed, next_review: next.nextReview, correct_count: next.correctCount, wrong_count: next.wrongCount, interval: next.interval, ease_factor: next.easeFactor, confidence: next.confidence, mastery: next.mastery, updated_at: new Date().toISOString() }, { onConflict: 'user_id,word' })
+    await refreshDashboard(user.id)
+  }
+
+  async function signOut() {
+    if (supabaseConfigured()) await supabase.auth.signOut()
+    setUser(null); setProfile(null); setDashboard(null); setView('home')
+  }
+
+  const placementDone = guestState.placementResult
+>>>>>>> 00f644f1c2a426f01c3118904d420b007f2001d9
+  const currentWord = words[wordIndex]
+  const guestWeak = [...new Set(guestState.grammarAttempts.filter(a => !a.isCorrect).map(a => a.topic))].slice(0, 3)
+  const weakTopics = user ? dashboard?.weakGrammarTopics ?? [] : guestWeak
+  const dueWords = user ? dashboard?.dueVocabulary ?? 0 : Object.values(guestState.vocabularyProgress).filter(v => new Date(v.nextReview).getTime() <= Date.now()).length
+
+<<<<<<< HEAD
   return <main className="min-h-screen bg-background text-foreground">
     <div className="announcement">OpiOpe / Oppiminen, joka mukautuu sinuun <span>·</span> Aloita ilmaiseksi <ArrowRight size={14} /></div>
     <header className="site-header"><button className="brand" onClick={() => setView('home')} aria-label="OpiOpe etusivu"><span className="brand-mark">OO</span><span>OpiOpe<br /><em>Suomen kielen oppimisalusta</em></span></button><nav className="desktop-nav"><button onClick={() => setView('dashboard')}>Oma polku</button><a href="#courses">Kurssit</a><a href="#method">Harjoittele</a><a href="#yki">YKI</a><a href="#resources">Resurssit</a></nav><div className="header-actions"><div className="language-picker" aria-label="Valitse kieli"><button className={language === 'fi' ? 'active' : ''} onClick={() => chooseLanguage('fi')}>FI</button><button className={language === 'sv' ? 'active' : ''} onClick={() => chooseLanguage('sv')}>SV</button></div>{user ? <><button className="text-button" onClick={() => setView('dashboard')}>{profile?.display_name || 'Oma tili'}</button><button className="dark-button" onClick={signOut}><LogOut size={14} /> Kirjaudu ulos</button></> : <><button className="text-button" onClick={() => { setAuthMode('login'); setAuthOpen(true) }}>Kirjaudu</button><button className="dark-button" onClick={() => { setAuthMode('signup'); setAuthOpen(true) }}>Aloita ilmaiseksi <ArrowRight size={15} /></button></>}<button className="mobile-menu" onClick={() => setMenuOpen(!menuOpen)} aria-label="Avaa valikko">{menuOpen ? <X /> : <Menu />}</button></div></header>
@@ -72,9 +188,25 @@ export default function Page() {
     {menuOpen && <nav className="mobile-nav"><button onClick={() => { setView('dashboard'); setMenuOpen(false) }}>Oma polku</button><a href="#courses">Kurssit</a><a href="#method">Harjoittele</a><a href="#yki">YKI</a><a href="#resources">Resurssit</a></nav>}
 
     {view === 'home' && <><section className="hero" id="top"><div className="hero-copy"><p className="eyebrow">SUOMEN KIELEN OPPIMINEN · A0–C2</p><h1>Opi suomea.<br /><span>Puhu rohkeammin.</span><br />Elä Suomessa.</h1><p className="hero-lede">Opi käytännön suomea omaan tahtiisi. Harjoittele sanastoa, kielioppia, puhekieltä, työelämän suomea ja YKI-tehtäviä yhdessä paikassa.</p><div className="hero-buttons"><button className="primary-button" onClick={() => setView('placement')}>Tee tasotesti <ArrowRight size={17} /></button><a className="play-link" href="#method"><span className="play-icon"><CircleHelp size={19} /></span> Näin se toimii</a></div><p className="guest-trust">Voit aloittaa ilman rekisteröitymistä.</p><div className="hero-proof"><span className="proof-icon"><Sparkles size={16} /></span><p><strong>Yksilöllinen aloitus</strong><br />tavoitteesi ja aikasi mukaan.</p></div></div><div className="hero-art"><div className="art-note note-one">hei! <span>01</span></div><div className="art-note note-two">minä puhun suomea <span>02</span></div><div className="art-card"><div className="card-top"><span>Kuukauden sana</span><span>03 / 26</span></div><strong>juurtua</strong><p>to put down roots<br /><i>/ juːr.tu.ɑ /</i></p><div className="card-line" /><span className="card-example">“Täällä on hyvä juurtua.”</span></div><div className="art-circle">å</div><div className="art-label">/ äänen löytäminen /</div></div></section><section className="logo-strip"><span>RAKENNETTU SINULLE</span><div><strong>A0–C2</strong><strong>YKI</strong><strong>SRS</strong><strong>CEFR</strong></div></section><section className="section" id="method"><div className="section-kicker">01 / METODI</div><div className="split-heading"><h2>Ei ulkoa opettelua.<br /><span>Vaan käyttöä.</span></h2><div><p className="section-lede">Kieli ei ole lista sanoja. Se on avain siihen, että voit osallistua, kysyä, kertoa ja tulla ymmärretyksi.</p><button className="arrow-link" onClick={() => setAuthOpen(true)}>Aloita omalla tasollasi <ArrowRight size={16} /></button></div></div><div className="method-grid"><article className="method-card wide"><div className="method-icon"><Mic2 /></div><div><span>01 — PUHU</span><h3>Harjoittele oikeita tilanteita</h3><p>Rakenna lauseita, jotka tarvitset oikeassa elämässä.</p></div></article><article className="method-card"><div className="method-icon"><Headphones /></div><span>02 — KUUNTELE</span><h3>Totu suomen ääneen</h3><p>Kuuntele hidasta ja luonnollista puhetta.</p></article><article className="method-card accent"><div className="method-icon"><Target /></div><span>03 — RAKENNA</span><h3>Näe oma kehityksesi</h3><p>Viikkotavoitteet tekevät harjoittelusta tavan.</p></article></div></section><section className="section courses-section" id="courses"><div className="section-kicker">02 / OPINTOPOLUT</div><div className="section-heading-row"><div><h2>Löydä oma <span>polkusi.</span></h2><p>Kurssit A0-tasolta C2:een.</p></div></div><div className="course-grid">{courses.map(course => <article className={`course-card ${course.tone}`} key={course.title}><div className="course-top"><span>{course.level}</span><BookOpen size={16} /></div><div className="course-symbol">{course.icon}</div><h3>{course.title}</h3><p>{course.text}</p><button className="course-bottom" onClick={() => user ? setView('dashboard') : setAuthOpen(true)}>Aloita polku <ArrowRight size={18} /></button></article>)}</div></section><section className="yki-banner" id="yki"><div><p className="eyebrow">YKI-POLKU</p><h2>Sinä pystyt siihen.<br /><em>Me autamme perille.</em></h2><p>Jäsennelty harjoittelu tekee YKI-testistä tutun.</p><button className="light-button" onClick={() => user ? setView('dashboard') : setAuthOpen(true)}>Tutustu YKI-polkuun <ArrowRight size={16} /></button></div><div className="yki-score"><span>YKI</span><strong>4</strong><small>HYVÄ</small></div></section><section className="section faq-section" id="faq"><div className="section-kicker">03 / UKK</div><div className="faq-layout"><h2>Usein kysyttyä.<br /><span>Selkeästi.</span></h2><div className="faq-list">{[['Sopiiko OpiOpe minulle, jos olen ihan alussa?','Kyllä. Oma polku alkaa aina lähtötasosta, jonka voit määrittää rauhassa.'],['Miten edistymistä seurataan?','Harjoitukset tallentavat yritykset, sanaston kertauksen ja oppimistavoitteet omaan profiiliisi.'],['Voinko valmistautua YKI-testiin?','Kyllä. YKI-polku tuo tehtävätyypit ja viikoittaisen harjoittelurutiinin samaan paikkaan.']].map(([q,a], i) => <div className="faq-item" key={q}><button onClick={() => setFaq(faq === i ? null : i)} aria-expanded={faq === i}><span>{q}</span><span className="faq-plus">{faq === i ? '−' : '+'}</span></button>{faq === i && <p>{a}</p>}</div>)}</div></div></section></>}
+=======
+  return <main className="app-root">
+    <header className="site-header">
+      <button className="brand" onClick={() => setView('home')} aria-label="OpiOpe etusivu"><span className="brand-mark">OO</span><span className="brand-text"><strong>OpiOpe</strong><em>Suomen kielen oppimisalusta</em></span></button>
+      <nav className="desktop-nav" aria-label="Päävalikko"><button onClick={() => setView('dashboard')}>Oma polku</button><a href="#courses">Kurssit</a><button onClick={() => setView('grammar')}>Harjoittele</button><button onClick={() => setView('yki')}>YKI</button><a href="#resources">Resurssit</a></nav>
+      <div className="header-actions">{user ? <button className="outline-button" onClick={signOut}><LogOut size={15}/> Kirjaudu ulos</button> : <button className="outline-button" onClick={() => { setAuthMode('login'); setAuthOpen(true) }}>Kirjaudu</button>}<button className="primary-button" onClick={() => setView('placement')}>Aloita ilmaiseksi</button><button className="menu-btn" onClick={() => setMenuOpen(v => !v)} aria-label="Valikko">{menuOpen ? <X/> : <Menu/>}</button></div>
+    </header>
+    {menuOpen && <nav className="mobile-menu"><button onClick={() => setView('dashboard')}>Oma polku</button><button onClick={() => setView('grammar')}>Harjoittele</button><button onClick={() => setView('yki')}>YKI</button><button onClick={() => setView('placement')}>Tasotesti</button></nav>}
 
-    {view === 'onboarding' && <section className="app-shell"><div className="app-header"><button className="back-link" onClick={() => setView('home')}>← Etusivulle</button><span>OMA POLKU / {onboardingStep + 1} / 4</span></div><div className="onboarding-card"><div className="modal-progress">{[0,1,2,3].map(i => <i key={i} className={i <= onboardingStep ? 'done' : ''} />)}</div>{onboardingStep === 0 && <><span className="modal-label">ALOITETAAN</span><h2>Mikä on nimesi?</h2><p>Tehdään tästä sinun polkusi.</p><input className="large-input" value={onboarding.name} onChange={e => setOnboarding({ ...onboarding, name: e.target.value })} placeholder="Etunimi" autoFocus /></>}{onboardingStep === 1 && <><span className="modal-label">TASO</span><h2>Missä olet nyt?</h2><div className="choice-grid">{['En ole vielä varma','A0–A1','A2','B1','B2–C2'].map(x => <button className={onboarding.level === x ? 'selected' : ''} onClick={() => setOnboarding({ ...onboarding, level: x })} key={x}>{x}</button>)}</div></>}{onboardingStep === 2 && <><span className="modal-label">TAVOITE</span><h2>Mitä haluat tehdä suomeksi?</h2><div className="choice-grid">{['Puhua arjessa','Löytää töitä','Läpäistä YKI','Ymmärtää kumppania'].map(x => <button className={onboarding.goal === x ? 'selected' : ''} onClick={() => setOnboarding({ ...onboarding, goal: x })} key={x}>{x}</button>)}</div></>}{onboardingStep === 3 && <><span className="modal-label">AIKA</span><h2>Kuinka paljon aikaa sinulla on?</h2><div className="choice-grid">{[5,10,20,30].map(x => <button className={onboarding.minutes === x ? 'selected' : ''} onClick={() => setOnboarding({ ...onboarding, minutes: x })} key={x}>{x} min / päivä</button>)}</div></>}<button className="primary-button full" onClick={() => onboardingStep < 3 ? setOnboardingStep(onboardingStep + 1) : saveOnboarding()}>{onboardingStep < 3 ? 'Seuraava' : 'Luo oma polku'} <ArrowRight size={16} /></button></div></section>}
+    {view === 'home' && <>
+      <section className="hero"><div className="hero-copy"><p className="eyebrow">SUOMEN KIELEN OPPIMINEN · A0–C2</p><h1>Opi suomea.<br/><span>Puhu rohkeammin.</span><br/>Elä Suomessa.</h1><p className="hero-lede">Opi käytännön suomea omaan tahtiisi. Harjoittele kielioppia, sanastoa, puhekieltä, työelämän suomea ja YKI-tehtäviä yhdessä paikassa.</p><div className="hero-actions"><button className="primary-button large" onClick={() => setView('placement')}>Aloita ilmaiseksi <ArrowRight size={17}/></button><button className="outline-button large" onClick={() => setView('placement')}>Tee tasotesti</button></div><p className="guest-note">Voit aloittaa ilman rekisteröitymistä.</p></div><div className="hero-preview"><p className="eyebrow">SEURAAVAKSI SINULLE</p><div className="preview-card"><span className="preview-badge">{weakTopics.length ? 'SUOSITUS' : 'ESIMERKKI'}</span><h2>{weakTopics[0] ?? 'Partitiivi'}</h2><p>8 min · {weakTopics.length ? 'Perustuu viime harjoituksiisi' : 'Näe, miten henkilökohtainen harjoittelu toimii'}</p><button className="outline-button" onClick={() => setView('grammar')}>Harjoittele nyt</button></div><div className="word-card"><span>Päivän sana</span><strong>juurtua</strong><em>to put down roots</em><p>“Täällä on hyvä juurtua.”</p></div></div></section>
+      <section className="section" id="courses"><p className="eyebrow">OPINTOPOLUT</p><h2>Löydä oma polkusi.</h2><div className="course-grid">{courses.map(c => <article className="course-card" key={c.title}><div className="course-symbol">{c.icon}</div><small>{c.level}</small><h3>{c.title}</h3><p>{c.text}</p><button onClick={() => setView('lesson')}>Aloita <ArrowRight size={16}/></button></article>)}</div></section>
+      <section className="yki-strip"><div><p className="eyebrow">YKI-HARJOITTELU</p><h2>Harjoittele tavoitteellisesti.</h2><p>Tehtäviä kielioppiin, sanastoon ja lukemiseen ilman tekaistuja virallisia pistemääriä.</p></div><button className="light-button" onClick={() => setView('yki')}>Tutustu YKI-polkuun</button></section>
+    </>}
+>>>>>>> 00f644f1c2a426f01c3118904d420b007f2001d9
 
+    {view === 'placement' && <section className="app-shell"><button className="back-link" onClick={() => setView('home')}>← Etusivulle</button>{placementDone ? <div className="practice-card"><p className="eyebrow">TASOTESTI VALMIS</p><h1>{placementDone.estimatedLevel}</h1><p>Sait {placementDone.score}/{placementDone.total} oikein. Tämä on OpiOpen arvio, ei virallinen CEFR-todistus.</p><button className="primary-button" onClick={() => setView('lesson')}>Jatka suositeltuun harjoitukseen</button></div> : <div className="practice-card"><p className="eyebrow">KYSYMYS {placementIndex + 1} / {placementQuestions.length}</p><h2>{placementQuestions[placementIndex].prompt}</h2><div className="answer-list">{placementQuestions[placementIndex].options.map(o => <button key={o} onClick={() => choosePlacement(o)}>{o}</button>)}</div></div>}</section>}
+
+<<<<<<< HEAD
     {view === 'placement' && <section className="app-shell"><div className="app-header"><button className="back-link" onClick={() => setView('home')}>← Etusivulle</button><span>ALOITUSTESTI / {placementIndex + 1} / {placementQuestions.length}</span></div><div className="practice-card"><span className="modal-label">PIKAINEN TASOTESTI</span><h2>{placementQuestions[placementIndex].prompt}</h2><p className="pronunciation">Vastaa intuitiivisesti. Tämä on suuntaa antava, ei virallinen koe.</p><div className="answer-list">{placementQuestions[placementIndex].options.map(option => <button key={option} onClick={() => answerPlacement(option)}>{option}</button>)}</div></div></section>}
     {view === 'placement-result' && placementResult && <section className="app-shell"><div className="practice-card result-card"><span className="modal-label">ALOITUSTESTIN TULOS</span><h2>Tasosi on <span>{placementResult.estimatedLevel}</span>.</h2><p>Vastasit oikein {placementResult.score} / {placementResult.total} tehtävään. Suosittelemme aloittamaan rauhassa ja rakentamaan varmuutta käyttötilanteista.</p><button className="primary-button" onClick={() => setView(placementResult.recommendedLesson === 'suomi-alusta-asti' ? 'grammar' : 'vocabulary')}>Aloita suositeltu polku <ArrowRight size={16} /></button></div></section>}
     {view === 'swedish' && <section className="app-shell"><div className="app-header"><button className="back-link" onClick={() => setView('home')}>← Etusivulle</button><span>SVENSKA / START</span></div><div className="practice-card"><span className="modal-label">{swedishLesson.subtitle}</span><h2>{swedishLesson.title}</h2><p>{swedishLesson.example}</p><div className="answer-list">{swedishLesson.words.map(word => <button key={word}>{word}</button>)}</div><button className="primary-button" onClick={() => setView('home')}>Palaa etusivulle <ArrowRight size={16} /></button></div></section>}
@@ -82,12 +214,29 @@ export default function Page() {
     {view === 'lesson' && <section className="app-shell"><div className="app-header"><button className="back-link" onClick={() => setView('dashboard')}>← Oma polku</button><span>{activeLesson.level} / {lessonStage + 1} / {activeLesson.stages.length}</span></div><div className="lesson-progress"><i style={{ width: `${((lessonStage + 1) / activeLesson.stages.length) * 100}%` }} /></div><div className="practice-card lesson-card"><div className="practice-top"><span className="modal-label">{activeLesson.title}</span><span>{activeLesson.duration}</span></div><h2>{activeLesson.stages[lessonStage].title}</h2><p>{activeLesson.stages[lessonStage].body}</p><div className="lesson-example"><span>ESIMERKKI</span><strong>{activeLesson.stages[lessonStage].example}</strong></div><h3>{activeLesson.stages[lessonStage].question}</h3><div className="answer-list">{activeLesson.stages[lessonStage].options.map(option => <button className={lessonAnswer === option ? 'selected' : ''} key={option} onClick={() => answerLesson(option)}>{option}</button>)}</div>{lessonFeedback && <div className="feedback"><Check size={17} /> {lessonFeedback}</div>}<button className="primary-button" disabled={!lessonAnswer} onClick={nextLessonStage}>{lessonStage < activeLesson.stages.length - 1 ? 'Seuraava osio' : 'Merkitse suoritetuksi'} <ArrowRight size={16} /></button></div></section>}
 
     {view === 'dashboard' && <section className="dashboard-shell"><div className="dashboard-top"><div><p className="eyebrow">OMA OPPIMISPOLKUNI</p><h2>Hei, {profile?.display_name || 'oppija'}. <span>Jatketaanko?</span></h2><p>Tänään riittää {profile?.daily_minutes || 10} minuuttia. Tavoite: {profile?.goal || 'puhua arjessa'}.</p></div><button className="primary-button" onClick={() => setView('vocabulary')}>Aloita tämän päivän harjoitus <ArrowRight size={16} /></button></div><div className="stats-grid"><div className="stat-card"><Flame size={20} /><strong>{guestState.grammarAttempts.length > 0 || Object.keys(guestState.vocabularyProgress).length > 0 ? '1' : '0'}</strong><span>päivän putki</span></div><div className="stat-card"><Target size={20} /><strong>{profile?.daily_minutes || 10}</strong><span>minuuttia tänään</span></div><div className="stat-card"><BookOpen size={20} /><strong>{Object.keys(guestState.vocabularyProgress).length}</strong><span>opitusta sanasta</span></div></div><div className="dashboard-grid"><article className="today-card"><span className="modal-label">TÄNÄÄN</span><h3>Yksi sana, yksi askel.</h3><p>Harjoittele kuukauden sanaa ja rakenna omaa sanastoasi. Jokainen vastaus tallentuu.</p><button className="dark-button" onClick={() => setView('vocabulary')}>Harjoittele <ArrowRight size={15} /></button></article><article className="progress-card"><span className="modal-label">OMA TASO</span><div className="level-big">{profile?.level || 'A0–A1'}</div><p>Seuraava tavoite: ensimmäinen kokonainen keskustelu.</p><div className="progress-bar"><i /></div></article></div><h3 className="dashboard-heading">Seuraavat polut</h3><div className="mini-courses">{courseLessons.map(c => <button key={c.slug} onClick={() => openLesson(c)}><span className={`mini-icon ${c.color}`}>{c.title.slice(0, 1)}</span><span><strong>{c.title}</strong><small>{c.level} · {completedLessons.includes(c.slug) ? 'suoritettu' : 'jatka tästä'}</small></span><ArrowRight size={16} /></button>)}</div></section>}
+=======
+    {view === 'dashboard' && <section className="app-shell"><button className="back-link" onClick={() => setView('home')}>← Etusivulle</button><div className="dashboard-head"><p className="eyebrow">OMA POLKU</p><h1>Hei, {profile?.display_name ?? 'oppija'}.</h1><p>{user ? 'Tilisi edistyminen tallennetaan Supabaseen.' : 'Käytät vierailijatilaa. Edistyminen tallennetaan tähän selaimeen.'}</p></div><div className="stats-grid"><div><strong>{placementDone?.estimatedLevel ?? dashboard?.placementResult?.estimatedLevel ?? '—'}</strong><span>arvioitu taso</span></div><div><strong>{dueWords}</strong><span>sanaa kerrattavana</span></div><div><strong>{weakTopics.length}</strong><span>heikkoa kielioppialuetta</span></div></div><div className="dashboard-actions"><button className="primary-button" onClick={() => setView('lesson')}>Jatka oppimista</button><button className="outline-button" onClick={() => setView('vocabulary')}>Sanastokertaus</button><button className="outline-button" onClick={() => setView('grammar')}>Kielioppi</button></div></section>}
+>>>>>>> 00f644f1c2a426f01c3118904d420b007f2001d9
 
-    {view === 'grammar' && <section className="app-shell"><div className="app-header"><button className="back-link" onClick={() => setView('dashboard')}>← Oma polku</button><span>HARJOITUKSET / GRAMMATIIKKA</span></div><div className="practice-card"><div className="practice-top"><span className="modal-label">TEHTÄVÄ {grammarIndex + 1} / {grammarQuestions.length}</span><span><PenLine size={15} /> RAKENTEET</span></div><h2>{grammarQuestions[grammarIndex].prompt}</h2><p className="pronunciation">Valitse lauseeseen sopiva muoto.</p><div className="answer-list">{grammarQuestions[grammarIndex].options.map(option => <button className={grammarAnswer === option ? 'selected' : ''} key={option} onClick={() => finishGrammar(option)}>{option}</button>)}</div>{grammarFeedback && <div className="feedback"><Check size={17} /> {grammarFeedback}</div>}<div className="practice-actions"><button className="outline-button" onClick={() => { setGrammarIndex((grammarIndex + 1) % grammarQuestions.length); setGrammarAnswer(''); setGrammarFeedback('') }}>Seuraava</button><span className="modal-label">Pieni askel joka päivä.</span></div></div></section>}
+    {view === 'lesson' && <section className="app-shell"><button className="back-link" onClick={() => setView('dashboard')}>← Oma polku</button><div className="practice-card"><p className="eyebrow">OPPITUNTI</p><h2>{representativeLesson.title}</h2><p>{representativeLesson.objective}</p><div className="lesson-box"><strong>Miksi?</strong><p>{representativeLesson.explanation}</p>{representativeLesson.examples.map(e => <p key={e}>• {e}</p>)}</div><button className="primary-button" onClick={() => setView('grammar')}>Harjoittele rakennetta</button></div></section>}
 
-    {view === 'vocabulary' && <section className="app-shell"><div className="app-header"><button className="back-link" onClick={() => setView('dashboard')}>← Oma polku</button><span>SANASTO / KERTAUS</span></div><div className="practice-card"><div className="practice-top"><span className="modal-label">SANA {wordIndex + 1} / {words.length}</span><span><Sparkles size={15} /> SRS-KERTAUS</span></div><div className="word-big">{currentWord.word}</div><p className="pronunciation">Kuinka tämä sana kääntyy englanniksi?</p><input className="large-input" value={wordAnswer} onChange={e => setWordAnswer(e.target.value)} onKeyDown={e => { if (e.key === 'Enter') finishWord() }} placeholder="Kirjoita käännös" autoFocus />{wordFeedback && <div className="feedback"><Check size={17} /> {wordFeedback}</div>}<div className="practice-actions"><button className="outline-button" onClick={() => { setWordIndex((wordIndex + 1) % words.length); setWordAnswer(''); setWordFeedback('') }}>Ohita</button><button className="primary-button" onClick={finishWord}>Tarkista <ArrowRight size={16} /></button></div><p className="example-line">“{currentWord.example}”</p></div></section>}
+    {view === 'grammar' && <section className="app-shell"><button className="back-link" onClick={() => setView('dashboard')}>← Oma polku</button><div className="practice-card"><p className="eyebrow">KIELIOPPI · {grammarIndex + 1}/{grammarQuestions.length}</p><h2>{grammarQuestions[grammarIndex].prompt}</h2><div className="answer-list">{grammarQuestions[grammarIndex].options.map(o => <button className={grammarAnswer === o ? 'selected' : ''} key={o} onClick={() => void answerGrammar(o)}>{o}</button>)}</div>{grammarFeedback && <div className="feedback"><Check size={17}/>{grammarFeedback}</div>}<button className="outline-button" onClick={() => { setGrammarIndex(i => (i + 1) % grammarQuestions.length); setGrammarAnswer(''); setGrammarFeedback('') }}>Seuraava tehtävä</button></div></section>}
 
+<<<<<<< HEAD
     <section className="section tools-section" id="resources"><div className="section-kicker">ILMAISET TYÖKALUT</div><div className="section-heading-row"><div><h2>Ilmaiset työkalut<br /><span>ensimmäiseen askeleeseen.</span></h2><p>Katso, miltä OpiOpe tuntuu ennen kuin luot tilin.</p></div></div><div className="tools-grid"><button onClick={() => setView('placement')}><strong>Tasotesti</strong><span>Selvitä lähtötasosi.</span><ArrowRight size={16} /></button><button onClick={() => setView('grammar')}><strong>Kielioppiharjoittelu</strong><span>Harjoittele rakenteita.</span><ArrowRight size={16} /></button><button onClick={() => setView('vocabulary')}><strong>Sanastokertaus</strong><span>Opi sana kerrallaan.</span><ArrowRight size={16} /></button><button onClick={() => setAuthOpen(true)}><strong>Puhekieli</strong><span>Luontevampaa arkea.</span><ArrowRight size={16} /></button><button onClick={() => setAuthOpen(true)}><strong>Käännösapu</strong><span>Ymmärrä merkitys.</span><ArrowRight size={16} /></button><button onClick={() => setAuthOpen(true)}><strong>YKI-esimerkit</strong><span>Tutustu tehtävätyyppeihin.</span><ArrowRight size={16} /></button><button onClick={() => setView('swedish')}><strong>Ruotsi alusta asti</strong><span>Toinen kielipolku.</span><ArrowRight size={16} /></button></div></section><footer className="footer"><div className="footer-top"><button className="brand" onClick={() => setView('home')}><span className="brand-mark">OO</span><span>OpiOpe<br /><em>Suomen kielen oppimisalusta</em></span></button><p>Opi suomea. Oikeasti.</p><div className="footer-links"><a href="#courses">Kurssit</a><a href="#faq">UKK</a><a href="https://www.oph.fi/fi">Opetushallitus</a></div></div><div className="footer-bottom"><span>© 2026 OpiOpe</span><span>Rakennettu oppimiseen.</span></div></footer>
     {authOpen && <div className="modal-backdrop" onClick={() => setAuthOpen(false)}><div className="placement-modal auth-modal" role="dialog" aria-modal="true" onClick={e => e.stopPropagation()}><button className="modal-close" onClick={() => setAuthOpen(false)} aria-label="Sulje"><X size={18} /></button><span className="modal-label">{authMode === 'signup' ? 'ALOITA OMA POLKU' : 'TERVETULOA TAKAISIN'}</span><h2>{authMode === 'signup' ? 'Oppiminen alkaa tästä.' : 'Jatketaan siitä, mihin jäit.'}</h2><form onSubmit={authenticate}><label>Sähköposti<input className="large-input" type="email" required value={email} onChange={e => setEmail(e.target.value)} /></label><label>Salasana<input className="large-input" type="password" minLength={6} required value={password} onChange={e => setPassword(e.target.value)} /></label>{authMessage && <p className="auth-message">{authMessage}</p>}<button className="primary-button full" type="submit">{authMode === 'signup' ? 'Luo tili' : 'Kirjaudu'} <ArrowRight size={16} /></button></form><button className="switch-auth" onClick={() => setAuthMode(authMode === 'signup' ? 'login' : 'signup')}>{authMode === 'signup' ? 'Minulla on jo tili' : 'Luo uusi tili'}</button></div></div>}
+=======
+    {view === 'vocabulary' && <section className="app-shell"><button className="back-link" onClick={() => setView('dashboard')}>← Oma polku</button><div className="practice-card"><p className="eyebrow">SRS-SANASTO · {wordIndex + 1}/{words.length}</p><div className="word-big">{currentWord.word}</div><p>Mitä sana tarkoittaa englanniksi?</p><input className="large-input" value={wordAnswer} onChange={e => setWordAnswer(e.target.value)} placeholder="Kirjoita käännös"/>{wordFeedback && <div className="feedback"><Sparkles size={17}/>{wordFeedback}</div>}<div className="row"><button className="primary-button" onClick={() => void answerWord()}>Tarkista</button><button className="outline-button" onClick={() => { setWordIndex(i => (i + 1) % words.length); setWordAnswer(''); setWordFeedback('') }}>Seuraava</button></div></div></section>}
+
+    {view === 'yki' && <section className="app-shell"><button className="back-link" onClick={() => setView('home')}>← Etusivulle</button><div className="practice-card"><p className="eyebrow">YKI · EI VIRALLINEN TULOS</p><h2>YKI-harjoittelua ilman tekaistua arvosanaa.</h2><p>Harjoittele kielioppia, sanastoa ja lukemista. OpiOpe ei väitä antavansa virallista YKI- tai CEFR-todistusta.</p><div className="row"><button className="primary-button" onClick={() => setView('grammar')}>Kielioppi</button><button className="outline-button" onClick={() => setView('vocabulary')}>Sanasto</button></div></div></section>}
+
+    {view === 'ai' && <section className="app-shell"><div className="practice-card"><p className="eyebrow">EI KONFIGUROITU</p><h2>AI-opettaja ei ole vielä käytettävissä.</h2><p>Turvallinen palvelinpuolen AI-integraatio on määritettävä ennen käyttöönottoa.</p></div></section>}
+    {view === 'translation' && <section className="app-shell"><div className="practice-card"><p className="eyebrow">EI KONFIGUROITU</p><h2>Käännöspalvelu ei ole tällä hetkellä käytettävissä.</h2><p>OpiOpe ei esitä esimerkkivastauksia oikean käännöspalvelun tuloksina.</p></div></section>}
+
+    <section className="section tools" id="resources"><p className="eyebrow">ILMAISET TYÖKALUT</p><h2>Aloita ilman tiliä.</h2><div className="tool-grid"><button onClick={() => setView('placement')}><Target/>Tasotesti</button><button onClick={() => setView('grammar')}><PenLine/>Kielioppi</button><button onClick={() => setView('vocabulary')}><Sparkles/>Sanasto</button><button onClick={() => setView('lesson')}><BookOpen/>Oppitunti</button></div></section>
+    <footer><div className="brand"><span className="brand-mark">OO</span><span className="brand-text"><strong>OpiOpe</strong><em>Opi suomea. Oikeasti.</em></span></div><nav><a href="/privacy">Tietosuoja</a><a href="/cookies">Evästeet</a><a href="/terms">Käyttöehdot</a><a href="/account/privacy">Omat tiedot</a></nav><span>© 2026 OpiOpe</span></footer>
+
+    {authOpen && <div className="modal-backdrop" onClick={() => setAuthOpen(false)}><div className="auth-modal" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true"><button className="modal-close" onClick={() => setAuthOpen(false)} aria-label="Sulje"><X/></button><p className="eyebrow">{authMode === 'signup' ? 'LUO TILI' : 'KIRJAUDU'}</p><h2>{authMode === 'signup' ? 'Tallenna oma polkusi.' : 'Tervetuloa takaisin.'}</h2><form onSubmit={authenticate}><label>Sähköposti<input className="large-input" type="email" required value={email} onChange={e => setEmail(e.target.value)}/></label><label>Salasana<input className="large-input" type="password" minLength={6} required value={password} onChange={e => setPassword(e.target.value)}/></label>{authMessage && <p className="auth-message">{authMessage}</p>}<button className="primary-button" disabled={busy}>{busy ? 'Odota…' : authMode === 'signup' ? 'Luo tili' : 'Kirjaudu'}</button></form><button className="text-link" onClick={() => setAuthMode(m => m === 'signup' ? 'login' : 'signup')}>{authMode === 'signup' ? 'Minulla on jo tili' : 'Luo uusi tili'}</button></div></div>}
+>>>>>>> 00f644f1c2a426f01c3118904d420b007f2001d9
   </main>
 }

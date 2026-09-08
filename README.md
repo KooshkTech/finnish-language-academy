@@ -1,33 +1,59 @@
-# finnish-language-academy
+# OpiOpe — V9 Code Quality Clean
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+OpiOpe is a Finnish-first learning platform for practical Finnish, YKI preparation, grammar and vocabulary. The app supports guest-first learning and optional Supabase-backed accounts.
 
-## Built with v0
+## Included
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+- Guest placement test and local progress (`opiope_guest_learning_v1`)
+- Grammar attempts and vocabulary SRS
+- Supabase auth and authenticated progress when configured
+- Guest-safe fallback when Supabase environment variables are missing
+- GDPR consent-gated analytics
+- `/privacy`, `/cookies`, `/terms`, and `/account/privacy`
+- Authenticated account data export/deletion architecture via Supabase Edge Function
+- SEO metadata, sitemap, robots, and PWA manifest
+- V9 React/TypeScript/ESLint cleanup
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_YL8Nb9KDN4A799ajUgN5Vg9uECIx)
-
-## Getting Started
-
-First, run the development server:
+## Run locally
 
 ```bash
+npm install
+npm run lint
+npm run typecheck
+npm run build
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Environment
 
-## Learn More
+Copy `.env.example` to `.env.local` and set real values when using cloud accounts:
 
-To learn more, take a look at the following resources:
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_ANON_KEY
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_CONTROLLER_NAME=YOUR_LEGAL_COMPANY_OR_CONTROLLER_NAME
+NEXT_PUBLIC_PRIVACY_EMAIL=privacy@example.com
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+Never expose `SUPABASE_SERVICE_ROLE_KEY` in browser/public variables.
+
+## Supabase
+
+Apply:
+
+`supabase/migrations/20260906170000_opiope_v7_learning_core.sql`
+
+Deploy:
+
+`supabase/functions/account-data/index.ts`
+
+The public/guest app must still work when Supabase is not configured; login and cloud-only actions should show truthful unavailable/configuration-required states.
+
+## Production notes
+
+Before launch, set the real legal controller name/privacy email, document subprocessors and retention, test RLS between two users, and verify account export/deletion against the deployed Edge Function.
+
+V9 lint and typecheck were cleaned to pass. A full production build should still be run on the deployment machine because the earlier build environment could not download the Linux Next.js SWC dependency from npm.

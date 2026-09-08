@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import PrivacyRuntime from '@/components/privacy/PrivacyRuntime'
 import './globals.css'
+import PrivacyRuntime from '@/components/privacy/PrivacyRuntime'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://opiope.fi'),
