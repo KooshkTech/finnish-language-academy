@@ -1,11 +1,9 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-<<<<<<< HEAD
 import type { LessonProgress, PlacementResult } from '@/types/learning'
 
 export async function savePlacementResult(supabase: SupabaseClient, userId: string, result: PlacementResult) { const { error } = await supabase.from('placement_results').insert({ user_id: userId, level: result.estimatedLevel, grammar_score: result.categoryScores.grammar?.correct ?? 0, vocabulary_score: result.categoryScores.vocabulary?.correct ?? 0, reading_score: result.categoryScores.reading?.correct ?? 0, answers: result }); if (error) throw error }
 export async function saveLessonProgress(supabase: SupabaseClient, userId: string, progress: LessonProgress) { const { error } = await supabase.from('lesson_progress').upsert({ user_id: userId, lesson_slug: progress.lessonSlug, status: progress.completedAt ? 'completed' : 'started', completed_at: progress.completedAt, updated_at: new Date().toISOString() }, { onConflict: 'user_id,lesson_slug' }); if (error) throw error }
 export async function recordDailyActivity(supabase: SupabaseClient, userId: string, minutes = 0) { const today = new Date().toISOString().slice(0, 10); const { data, error: readError } = await supabase.from('daily_activity').select('minutes,exercises').eq('user_id', userId).eq('activity_date', today).maybeSingle(); if (readError) throw readError; const { error } = await supabase.from('daily_activity').upsert({ user_id: userId, activity_date: today, minutes: (data?.minutes ?? 0) + minutes, exercises: (data?.exercises ?? 0) + 1 }, { onConflict: 'user_id,activity_date' }); if (error) throw error }
-=======
 import type { CefrLevel, DashboardData, LessonProgress, PlacementResult } from '@/types/learning'
 
 type PlacementRow = {
@@ -157,4 +155,3 @@ export async function saveUserProgress(supabase: SupabaseClient, userId: string,
   }, { onConflict: 'user_id' })
   if (error) throw error
 }
->>>>>>> 00f644f1c2a426f01c3118904d420b007f2001d9
