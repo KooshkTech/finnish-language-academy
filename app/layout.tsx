@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from 'next'
-import PrivacyRuntime from '@/components/privacy/PrivacyRuntime'
 import './globals.css'
 import PrivacyRuntime from '@/components/privacy/PrivacyRuntime'
 
