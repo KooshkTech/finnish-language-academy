@@ -5,7 +5,7 @@ export default async function StudentPage() {
   const { profile, supabase, user } = await requireRole(['student'])
 
   const [{ data: progress }, { data: assignments }] = await Promise.all([
-    supabase.from('user_lesson_progress').select('lesson_id, mastery_score, updated_at').eq('user_id', user.id).order('updated_at', { ascending: false }).limit(5),
+    supabase.from('lesson_progress').select('lesson_slug, progress_percent, updated_at').eq('user_id', user.id).order('updated_at', { ascending: false }).limit(5),
     supabase.from('assignments').select('id, title, due_at, class_id').order('due_at', { ascending: true }).limit(5),
   ])
 
@@ -30,7 +30,7 @@ export default async function StudentPage() {
 
       <section style={{marginTop:36}}>
         <h2>{fi ? 'Viimeisin edistyminen' : 'Senaste framsteg'}</h2>
-        {progress?.length ? progress.map((p, i) => <div key={`${p.lesson_id}-${i}`}>{p.lesson_id} · {p.mastery_score ?? 0}%</div>) : <p>{fi ? 'Aloita ensimmäinen oppitunti.' : 'Börja din första lektion.'}</p>}
+        {progress?.length ? progress.map((p, i) => <div key={`${p.lesson_slug}-${i}`}>{p.lesson_slug} · {p.progress_percent ?? 0}%</div>) : <p>{fi ? 'Aloita ensimmäinen oppitunti.' : 'Börja din första lektion.'}</p>}
       </section>
     </main>
   )
