@@ -1,8 +1,16 @@
 -- OPIOPE V25 teacher/student + recurring lesson foundation
-create type if not exists public.app_role as enum ('student','teacher','admin');
-create type if not exists public.class_type as enum ('general','swedish','yki','work','integration');
-create type if not exists public.lesson_frequency as enum ('manual','daily','weekly','monthly','yearly');
-create type if not exists public.lesson_status as enum ('draft','review','approved','scheduled','published','archived');
+DO $$ BEGIN
+  CREATE TYPE public.app_role AS ENUM ('student','teacher','admin');
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN
+  CREATE TYPE public.class_type AS ENUM ('general','swedish','yki','work','integration');
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN
+  CREATE TYPE public.lesson_frequency AS ENUM ('manual','daily','weekly','monthly','yearly');
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN
+  CREATE TYPE public.lesson_status AS ENUM ('draft','review','approved','scheduled','published','archived');
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 alter table if exists public.profiles
   add column if not exists role public.app_role not null default 'student',
@@ -94,28 +102,36 @@ alter table public.assignment_submissions enable row level security;
 alter table public.recurring_lesson_plans enable row level security;
 alter table public.lesson_versions enable row level security;
 
+DROP POLICY IF EXISTS "teachers manage own classes" ON public.teacher_classes;
 create policy "teachers manage own classes" on public.teacher_classes
 for all using (teacher_id = auth.uid()) with check (teacher_id = auth.uid());
 
+DROP POLICY IF EXISTS "students read joined classes" ON public.teacher_classes;
 create policy "students read joined classes" on public.teacher_classes
 for select using (exists (select 1 from public.teacher_class_members m where m.class_id = id and m.student_id = auth.uid()));
 
+DROP POLICY IF EXISTS "teachers manage own memberships" ON public.teacher_class_members;
 create policy "teachers manage own memberships" on public.teacher_class_members
 for all using (exists (select 1 from public.teacher_classes c where c.id = class_id and c.teacher_id = auth.uid()))
 with check (exists (select 1 from public.teacher_classes c where c.id = class_id and c.teacher_id = auth.uid()));
 
+DROP POLICY IF EXISTS "students read own memberships" ON public.teacher_class_members;
 create policy "students read own memberships" on public.teacher_class_members
 for select using (student_id = auth.uid());
 
+DROP POLICY IF EXISTS "teachers manage own assignments" ON public.assignments;
 create policy "teachers manage own assignments" on public.assignments
 for all using (teacher_id = auth.uid()) with check (teacher_id = auth.uid());
 
+DROP POLICY IF EXISTS "students read class assignments" ON public.assignments;
 create policy "students read class assignments" on public.assignments
 for select using (exists (select 1 from public.teacher_class_members m where m.class_id = class_id and m.student_id = auth.uid()));
 
+DROP POLICY IF EXISTS "students manage own submissions" ON public.assignment_submissions;
 create policy "students manage own submissions" on public.assignment_submissions
 for all using (student_id = auth.uid()) with check (student_id = auth.uid());
 
+DROP POLICY IF EXISTS "teachers read class submissions" ON public.assignment_submissions;
 create policy "teachers read class submissions" on public.assignment_submissions
 for select using (exists (
   select 1 from public.assignments a
@@ -123,8 +139,10 @@ for select using (exists (
   where a.id = assignment_id and c.teacher_id = auth.uid()
 ));
 
+DROP POLICY IF EXISTS "teachers manage recurring plans" ON public.recurring_lesson_plans;
 create policy "teachers manage recurring plans" on public.recurring_lesson_plans
 for all using (teacher_id = auth.uid()) with check (teacher_id = auth.uid());
 
+DROP POLICY IF EXISTS "teachers manage lesson versions" ON public.lesson_versions;
 create policy "teachers manage lesson versions" on public.lesson_versions
 for all using (teacher_id = auth.uid()) with check (teacher_id = auth.uid());
