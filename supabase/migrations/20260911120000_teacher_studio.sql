@@ -1,0 +1,3 @@
+-- Teacher Studio schema is applied to the connected Supabase project.
+-- This migration records the teacher platform tables, role column, helper functions,
+-- indexes, and row-level security policies created for the application.
