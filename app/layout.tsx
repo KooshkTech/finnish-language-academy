@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
+import './v24.css'
 import PrivacyRuntime from '@/components/privacy/PrivacyRuntime'
+import ReleaseSurface from '@/components/academy/ReleaseSurface'
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://opiope.fi'),
@@ -15,5 +17,5 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { colorScheme: 'light', themeColor: '#f3f1eb', width: 'device-width', initialScale: 1 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="fi" className="bg-background"><body className="antialiased">{children}<PrivacyRuntime /></body></html>
+  return <html lang="fi" className="bg-background"><body className="antialiased"><ReleaseSurface>{children}</ReleaseSurface><PrivacyRuntime /></body></html>
 }

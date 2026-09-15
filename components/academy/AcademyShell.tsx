@@ -7,7 +7,7 @@ import { curriculumBooks, representativeLessons } from '@/data/curriculum'
 
 type Mode = 'home' | 'learn' | 'practice' | 'yki' | 'progress' | 'review' | 'tutor'
 
-const nav = [['Learn','/learn'],['Practice','/practice'],['YKI','/yki'],['AI Tutor','/tutor'],['Progress','/progress'],['Review','/review']] as const
+const nav = [['Learn','/learn'],['Practice','/practice'],['YKI','/yki'],['AI Tutor','/tutor'],['Progress','/progress'],['Review','/review'],['Courses & Login','/gateway']] as const
 const skillCards = [
   { label: 'Lukutaito', title: 'Lue ja ymmärrä', text: 'Avaa teksti, poimi tärkeät sanat ja testaa ymmärtämisesi.', icon: BookOpen },
   { label: 'Kuullun ymmärtäminen', title: 'Kuuntele rauhassa', text: 'Harjoittele transkriptin, nopeuden ja kysymysten avulla.', icon: Headphones },
@@ -29,6 +29,7 @@ export default function AcademyShell({ mode = 'home' }: { mode?: Mode }) {
   return <main className="academy-root">
     <div className="announcement"><span>OPIOPE</span> Suomen kieli A0–C2 · Oppimisarvio ei ole virallinen CEFR- tai YKI-todistus</div>
     <header className="academy-header"><Link className="brand" href="/"><span className="brand-mark">OO</span><span className="brand-text"><strong>OPIOPE</strong><em>Suomen kieli A0–C2</em></span></Link><nav className="desktop-nav" aria-label="Päävalikko">{nav.map(([label, href]) => <Link key={href} className={mode === href.slice(1) ? 'active' : ''} href={href}>{label}</Link>)}</nav><Link className="primary-button" href="/learn">Jatka oppimista <ArrowRight size={15} /></Link></header>
+    <nav aria-label="Courses and class workspaces" style={{display:'flex',gap:12,flexWrap:'wrap',padding:'12px 5vw'}}><Link className="outline-button" href="/gateway">Suomi / Svenska · Kirjaudu</Link><Link className="outline-button" href="/student">Opiskelijan työpöytä</Link><Link className="outline-button" href="/teacher">Opettajan työpöytä</Link></nav>
     {isHome && <>
       <section className="academy-hero"><div><p className="eyebrow">FINNISH FROM A0 TO C2</p><h1>Opi suomea.<br /><span>Puhu rohkeammin.</span><br />Elä Suomessa.</h1><p className="hero-lede">Selkeä, tavoitteellinen oppimispolku aikuisille. Opiskele rakennetta, harjoittele taitoja ja huomaa oma edistymisesi.</p><div className="hero-buttons"><Link className="primary-button large" href="/learn">Aloita oppiminen <ArrowRight size={16} /></Link><Link className="outline-button large" href="/placement-test">Löydä lähtötasosi</Link></div><p className="guest-trust">Voit aloittaa ilman tiliä. Tallenna edistyminen myöhemmin.</p></div><div className="hero-panel"><div className="hero-panel-top"><span>TÄNÄÄN · 12 MIN</span><Target size={18} /></div><p className="panel-kicker">Päivän oppimispolku</p><h2>Minä olen...</h2><p>Esittäytyminen, olla-verbi ja ensimmäinen puheharjoitus.</p><div className="panel-progress"><i /><i /><i /><i /></div><Link className="arrow-link" href="/learn/opiope-1/lesson-01">Avaa oppitunti <ArrowRight size={15} /></Link></div></section>
       <section className="section academy-section"><div className="section-heading-row"><div><p className="eyebrow">OPIOPE-POLKU</p><h2>A0:sta C2:een,<br /><span>yksi taito kerrallaan.</span></h2></div><p>Seitsemän selkeää etappia, joiden sisällä opit lukemaan, kuuntelemaan, kirjoittamaan ja puhumaan.</p></div><div className="path-grid">{curriculumBooks.slice(0, 6).map((book, index) => <Link href={`/learn/${book.slug}`} className={`path-card path-${index + 1}`} key={book.slug}><span>{book.range}</span><strong>{book.title}</strong><p>{book.focus}</p><small>{book.lessons} oppituntia <ArrowRight size={14} /></small></Link>)}</div></section>
@@ -39,4 +40,3 @@ export default function AcademyShell({ mode = 'home' }: { mode?: Mode }) {
     <footer className="footer"><div className="footer-top"><div className="brand"><span className="brand-mark">OO</span><span className="brand-text"><strong>OPIOPE</strong><em>Suomen kieli A0–C2</em></span></div><p>Opi suomea. Oikeasti.</p></div><div className="footer-bottom"><span>© 2026 OPIOPE</span><span>Harjoitustulokset eivät ole virallisia YKI- tai CEFR-todistuksia.</span></div></footer>
   </main>
 }
-

@@ -1,0 +1,4 @@
+import Link from 'next/link'
+
+export default function TeacherOperationsSummary({language,classes,students,sessions,unread}:{language:'fi'|'sv';classes:number;students:number;sessions:number;unread:number}){const fi=language==='fi';const items=[{label:fi?'Luokat':'Klasser',value:classes,href:'/teacher/classes'},{label:fi?'Opiskelijat':'Studerande',value:students,href:'/teacher/classes'},{label:fi?'Tulevat live-tunnit':'Kommande livelektioner',value:sessions,href:'/teacher/calendar'},{label:fi?'Lukemattomat':'Olästa',value:unread,href:'/teacher#notifications'}];return <section style={{marginBottom:28}}><p className="eyebrow">{fi?'TILANNE NYT':'LÄGET NU'}</p><div className="teacher-dashboard-grid">{items.map(item=><Link key={item.label} href={item.href} className="teacher-dashboard-card"><strong style={{fontSize:32}}>{item.value}</strong><h2>{item.label}</h2><span>{fi?'Avaa':'Öppna'} →</span></Link>)}</div></section>}
+

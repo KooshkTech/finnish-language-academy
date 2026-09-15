@@ -34,3 +34,35 @@ export const representativeLesson = {
   examples: ['Menen kauppaan.', 'Lähden töihin.', 'Lapset menevät kouluun.'],
   exercise: { prompt: 'Valitse oikea muoto: “Illalla menen ___.”', options: ['kauppa', 'kauppaan', 'kaupassa'], answer: 'kauppaan', explanation: 'Menen kertoo liikkeestä kohti paikkaa, joten käytetään illatiivia: kauppaan.' },
 }
+
+export const swedishCourses = [
+  { level: 'A0–A1', title: 'Svenska från början', text: 'Hälsningar, vardagsord och de första användbara meningarna.', icon: 'å', tone: 'sun' },
+  { level: 'A1–A2', title: 'Svenska i vardagen', text: 'Öva service, boende, resor och samtal som du möter i Finland.', icon: 'ö', tone: 'mint' },
+  { level: 'A2–B1', title: 'Svenska på jobbet', text: 'Bygg ett praktiskt ordförråd för arbetsplatsen och kundmöten.', icon: 'ä', tone: 'blue' },
+]
+
+export const swedishPlacementQuestions = [
+  { id: 'sv1', category: 'Ordförråd', prompt: 'Vad betyder “tack”?', options: ['thank you', 'hello', 'sorry'], answer: 'thank you', level: 'A0' },
+  { id: 'sv2', category: 'Grammatik', prompt: 'Jag ___ i Finland.', options: ['bor', 'borar', 'bo'], answer: 'bor', level: 'A1' },
+  { id: 'sv3', category: 'Vardag', prompt: 'Jag går ___ jobbet klockan åtta.', options: ['till', 'på', 'från'], answer: 'till', level: 'A2' },
+  { id: 'sv4', category: 'Läsning', prompt: '“Mötet har flyttats till nästa vecka.” Vad hände?', options: ['Mötet ändrade tid.', 'Mötet började nu.', 'Mötet blev alltid inställt.'], answer: 'Mötet ändrade tid.', level: 'B1' },
+] as const
+
+export const swedishRepresentativeLesson = {
+  slug: 'sv-a1-vardag-1',
+  title: 'Svenska i vardagen: Jag går till jobbet',
+  objective: 'Du kan berätta vart du går och använda vanliga uttryck med till.',
+  explanation: 'När du berättar om riktning använder svenskan ofta “till”: till jobbet, till butiken, till skolan.',
+  examples: ['Jag går till jobbet.', 'Vi åker till butiken.', 'Barnen går till skolan.'],
+  exercise: { prompt: 'Välj rätt ord: “På morgonen går jag ___ jobbet.”', options: ['till', 'på', 'med'], answer: 'till', explanation: 'När du uttrycker riktning till en plats passar “till”: till jobbet.' },
+}
+
+export const workLifeTracks = [
+  { title: 'Sosiaali- ja terveysala', subtitle: 'Hoiva ja terveys', practice: 'Asiakaskohtaamiset, vuoronvaihto, ohjeet ja turvallinen ammattisanasto.' },
+  { title: 'Rakennus ja maalaus', subtitle: 'Työmaa', practice: 'Työohjeet, työkalut, materiaalit, turvallisuus ja keskustelu työnjohdon kanssa.' },
+  { title: 'IT ja tekninen tuki', subtitle: 'Teknologia', practice: 'Ongelman kuvaaminen, tukipyynnöt, asiakasviestintä ja tiimikeskustelut.' },
+  { title: 'Logistiikka ja varasto', subtitle: 'Varasto', practice: 'Keräily, toimitukset, poikkeamat, turvallisuus ja vuoron käytännön viestintä.' },
+  { title: 'Siivous ja kiinteistöpalvelut', subtitle: 'Palvelut', practice: 'Kohteet, aineet, työjärjestys, asiakkaat ja vikailmoitukset.' },
+  { title: 'Kasvatus ja päiväkoti', subtitle: 'Kasvatus', practice: 'Päivän tilanteet, huoltajaviestintä, ohjeet ja lapsen arjen sanasto.' },
+  { title: 'LVI ja huolto', subtitle: 'Tekninen työ', practice: 'Vikojen kuvaus, työmääräykset, osat, turvallisuus ja asiakkaan neuvonta.' },
+]
