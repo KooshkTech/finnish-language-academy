@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { LegalPage } from '@/components/privacy/LegalPage'
 
-export const metadata: Metadata = { title: 'Käyttöehdot', description: 'OpiOpen käyttöehdot.' }
+export const metadata: Metadata = { alternates: { canonical: '/terms' }, title: 'Käyttöehdot', description: 'OpiOpen käyttöehdot.' }
 
 export default function TermsPage() {
   return (

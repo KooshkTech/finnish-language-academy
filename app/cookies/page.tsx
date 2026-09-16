@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { LegalPage } from '@/components/privacy/LegalPage'
 
-export const metadata: Metadata = { title: 'Evästeet ja paikallinen tallennus', description: 'OpiOpen eväste- ja paikallisen tallennuksen käytännöt.' }
+export const metadata: Metadata = { alternates: { canonical: '/cookies' }, title: 'Evästeet ja paikallinen tallennus', description: 'OpiOpen eväste- ja paikallisen tallennuksen käytännöt.' }
 
 export default function CookiesPage() {
   return (

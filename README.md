@@ -1,4 +1,18 @@
-# OpiOpe — V9 Code Quality Clean
+# OpiOpe — V24.23.2
+
+V24.23.2 adds the public lesson sitemap, localized course metadata and explicit
+production indexing controls. See [RELEASE-V24.23.2-SEO.md](RELEASE-V24.23.2-SEO.md).
+Indexing is disabled by default; configure your reviewed production origin
+before enabling it. The V24.22.1 design remains unchanged.
+
+V24.23.1 restores the V24.22.1 design, removes English support from the 70
+new Finnish lessons, and adds separate teacher/student draft downloads.
+See [RELEASE-V24.23.1.md](RELEASE-V24.23.1.md) for the current release status.
+This is a local-test candidate, not yet a verified public-production release.
+
+V24.23 adds 70 original Finnish lessons, ten per level A0–C2. Start at
+`/learn/academy`. See [RELEASE-V24.23.md](RELEASE-V24.23.md) for scope, validation,
+installation and the limitations of synthetic audio and instructional level labels.
 
 OpiOpe is a Finnish-first learning platform for practical Finnish, YKI preparation, grammar and vocabulary. The app supports guest-first learning and optional Supabase-backed accounts.
 
@@ -21,6 +35,8 @@ npm install
 npm run lint
 npm run typecheck
 npm run build
+npm run audit:class-sessions
+npm run audit:community
 npm run dev
 ```
 
@@ -56,4 +72,6 @@ The public/guest app must still work when Supabase is not configured; login and 
 
 Before launch, set the real legal controller name/privacy email, document subprocessors and retention, test RLS between two users, and verify account export/deletion against the deployed Edge Function.
 
-V9 lint and typecheck were cleaned to pass. A full production build should still be run on the deployment machine because the earlier build environment could not download the Linux Next.js SWC dependency from npm.
+Run `npm run verify:release` for the current release gate, and repeat validation
+on the deployment machine. Account configuration and device audio still require
+separate real-environment testing.

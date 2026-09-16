@@ -1,6 +1,6 @@
 import AcademyShell from '@/components/academy/AcademyShell'
 
-export const metadata = { title: 'My Progress', description: 'See your Finnish learning progress and recommended next step.' }
+export const metadata = { title: 'Oma edistyminen', description: 'Tarkastele opiskelun näkymiä ja jatka harjoittelua.' }
 
 export default function ProgressPage() {
   return <AcademyShell mode="progress" />

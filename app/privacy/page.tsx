@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { LegalPage } from '@/components/privacy/LegalPage'
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/privacy' },
   title: 'Tietosuojaseloste',
   description: 'OpiOpen tietosuojaseloste: mitä tietoja käsitellään, miksi niitä käsitellään ja mitä oikeuksia käyttäjällä on.',
 }
