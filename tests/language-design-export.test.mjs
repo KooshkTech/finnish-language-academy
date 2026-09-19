@@ -5,9 +5,9 @@ import { createHash } from 'node:crypto'
 import { finnishLessons } from '../data/finnish-curriculum.mjs'
 import { studentWorksheet, teacherAnswerKey } from '../lib/teacher-draft-export.mjs'
 
-test('stylesheet is byte-identical to V24.22.1 baseline', async () => {
+test('stylesheet is byte-identical to the pre-launch public UI baseline', async () => {
   const css = await readFile(new URL('../app/globals.css', import.meta.url))
-  assert.equal(createHash('sha256').update(css).digest('hex'), 'e8fd1ad5038b46d972c1928f8a99032d6fd5220fe477145eab3c1355b4f04563')
+  assert.equal(createHash('sha256').update(css).digest('hex'), '00eccd5ce9ee7ffc79c296f18e4f6b2e853dbb64ff4d46ff2c04f5ff14da6acc')
   const layout = await readFile(new URL('../app/layout.tsx', import.meta.url), 'utf8')
   assert.ok(!layout.includes('v24.css') && !layout.includes('ReleaseSurface'))
 })

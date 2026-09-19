@@ -4,6 +4,7 @@ import { indexingEnabled, publicSeoPaths, siteOrigin } from '../lib/seo.mjs'
 test('SEO allowlist includes 70 lessons and excludes personal and planned pages', () => {
   const paths = publicSeoPaths()
   assert.equal(paths.filter(path => /\/fi-[a-c][0-2]-\d{2}$/.test(path)).length, 70)
+  assert.ok(paths.includes('/suomen-kurssi-maahanmuuttajille'))
   assert.equal(new Set(paths).size, paths.length)
   assert.ok(paths.every(path => !/account|student|teacher|admin|api|progress|review|opiope-/.test(path)))
 })
