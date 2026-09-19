@@ -1,19 +1,39 @@
 import type { Metadata } from 'next'
-import CourseGateway from '@/components/auth/CourseGateway'
+import CourseGateway, { homeFaqs } from '@/components/auth/CourseGateway'
 import { siteOrigin } from '@/lib/seo.mjs'
 
 export const metadata: Metadata = {
-  title: 'OpiOpe – Opi suomea tai ruotsia A0–C2',
-  description: 'Valitse suomen tai ruotsin kurssi ja etene tasolta A0 tasolle C2 opiskelijana, opettajana tai vapaana käyttäjänä.',
+  title: { absolute: 'Opi suomea tai ruotsia ilmaiseksi A0–C2 | OpiOpe' },
+  description: 'Aloita suomen tai ruotsin verkkokurssi ilmaiseksi. Selkeät A0–C2-oppitunnit arkeen, työhön, opiskeluun ja YKI-kokeeseen kaikilla laitteilla.',
   alternates: { canonical: '/' },
+  openGraph: {
+    title: 'Opi suomea tai ruotsia ilmaiseksi A0–C2',
+    description: 'Selkeä kielikurssi arkeen, työhön, opiskeluun ja YKI-kokeeseen. Aloita ilman tiliä.',
+    url: '/',
+    locale: 'fi_FI',
+    type: 'website',
+  },
 }
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
-  '@type': 'WebSite',
-  name: 'OpiOpe',
-  url: siteOrigin(),
-  inLanguage: ['fi', 'sv'],
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      name: 'OpiOpe',
+      url: siteOrigin(),
+      inLanguage: ['fi', 'sv'],
+      description: 'Ilmainen suomen ja ruotsin oppimisalusta tasoille A0–C2.',
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: homeFaqs.map(item => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: { '@type': 'Answer', text: item.answer },
+      })),
+    },
+  ],
 }
 
 export default function HomePage() {
